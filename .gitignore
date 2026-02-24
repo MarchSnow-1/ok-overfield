@@ -19,6 +19,7 @@ paddle_model/
 ok/
 *.dat
 ok
+ok-of/
 md5.txt
 update.bat
 click_screenshots/

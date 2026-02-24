@@ -19,7 +19,7 @@
 ![GitHub Repo stars](https://img.shields.io/github/stars/MarchSnow-1/ok-overfield?style=for-the-badge)
 [![Total Download](https://img.shields.io/github/downloads/MarchSnow-1/ok-overfield/total?style=for-the-badge)](https://github.com/MarchSnow-1/ok-overfield/releases)
 
-[English](README.md) | [简体中文](README_CN.md)
+[English](README.md) | [简体中文](README_zh-Hans.md) | [繁体中文](README_zh-Hant.md)
 
 </div>
 
@@ -78,7 +78,7 @@
 ## ❤️ 赞助与致谢
 
 ### 赞助商 (Sponsors)
-*   **EXE 签名**: Free code signing provided by [SignPath.io](https://signpath.io/), certificate by [SignPath Foundation](https://signpath.org/).
+* **EXE 签名**: Free code signing provided by [SignPath.io](https://signpath.io/), certificate by [SignPath Foundation](https://signpath.org/).
 
 ### 致谢
-*   [ok-oldking](https://github.com/ok-oldking)
+* [ok-oldking](https://github.com/ok-oldking)
