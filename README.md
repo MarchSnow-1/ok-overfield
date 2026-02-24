@@ -6,16 +6,12 @@
   </h1> 
   
   <p>
-    一个基于图像识别的OverField自动化程序, 基于 <a href="https://github.com/ok-oldking/ok-script">ok-script</a> 开发
-    <br />
-    An image-recognition-based automation tool for OverField, developed with <a href="https://github.com/ok-oldking/ok-script">ok-script</a>
+    一个基于图像识别的 OverField 自动化程序, 基于 <a href="https://github.com/ok-oldking/ok-script">ok-script</a> 开发
   </p>
   
   <p><i>通过模拟 Windows 用户接口进行操作，无内存读取、无文件修改</i></p>
-</div>
 
 <!-- Badges -->
-<div align="center">
 
 ![Platform](https://img.shields.io/badge/platform-Windows-blue?style=for-the-badge)
 [![GitHub Release](https://img.shields.io/github/v/release/MarchSnow-1/ok-overfield?style=for-the-badge)](https://github.com/MarchSnow-1/ok-overfield/releases)
@@ -23,9 +19,9 @@
 ![GitHub Repo stars](https://img.shields.io/github/stars/MarchSnow-1/ok-overfield?style=for-the-badge)
 [![Total Download](https://img.shields.io/github/downloads/MarchSnow-1/ok-overfield/total?style=for-the-badge)](https://github.com/MarchSnow-1/ok-overfield/releases)
 
-</div>
+[简体中文](README.md) | [English](README_EN.md)
 
-### [English](README_en.md) | [中文](README.md)
+</div>
 
 ---
 
@@ -69,7 +65,6 @@
 
 ## 🔗 使用ok-script的项目：
 
-* OverField [https://github.com/MarchSnow-1/ok-overfield](https://github.com/MarchSnow-1/ok-overfield)
 * 鸣潮 [https://github.com/ok-oldking/ok-wuthering-wave](https://github.com/ok-oldking/ok-wuthering-waves)
 * 明日方舟:终末地 [https://github.com/ok-oldking/ok-ef](https://github.com/ok-oldking/ok-end-field)
 * 原神(停止维护,但是后台过剧情可用) [https://github.com/ok-oldking/ok-genshin-impact](https://github.com/ok-oldking/ok-genshin-impact)
@@ -78,7 +73,7 @@
 * 星痕共鸣 [https://github.com/Sanheiii/ok-star-resonance](https://github.com/Sanheiii/ok-star-resonance)
 * 二重螺旋 [https://github.com/BnanZ0/ok-duet-night-abyss](https://github.com/BnanZ0/ok-duet-night-abyss)
 * 白荆回廊(停止更新) [https://github.com/ok-oldking/ok-baijing](https://github.com/ok-oldking/ok-baijing)
-
+* OverField [https://github.com/MarchSnow-1/ok-overfield](https://github.com/MarchSnow-1/ok-overfield)
 
 ## ❤️ 赞助与致谢
 
