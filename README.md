@@ -1,6 +1,6 @@
 <div align="center">
   <h1 align="center">
-    <img src="icon.png" width="256" alt="icons"/>
+    <img src="icons/icon.png" width="256" alt="icon"/>
     <br/>
     ok-overfield
   </h1> 
