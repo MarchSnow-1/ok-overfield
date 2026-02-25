@@ -6,6 +6,7 @@ tesseract
 models
 fonts
 data2
+venv.ps1
 # Byte-compiled / optimized / DLL files
 .idea/
 data_export
