@@ -107,7 +107,7 @@ class OverFieldBaseTask(BaseTask):
         做法: 先回主页面，再匹配互动按钮并点击
         """
         self.go_main_screen()
-        switcher = self.find_one('互动', threshold=0.85)
+        switcher = self.find_one('interactive', threshold=0.85)
         if switcher is None:
             raise Exception('找不到互动菜单入口')
         self.click(switcher, after_sleep=2.0)  # 界面动画要时间，延迟一下避免检测bug
