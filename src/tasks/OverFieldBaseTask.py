@@ -15,6 +15,21 @@ class OverFieldBaseTask(BaseTask):
         super().__init__(*args, **kwargs)
         self.key_config = self.get_global_config('Game Hotkey Config')
 
+    def operate(self, func):
+        self.executor.interaction.operate(func, block=True)
+
+    def do_mouse_down(self, key):
+        self.executor.interaction.do_mouse_down(key=key)
+
+    def do_mouse_up(self, key):
+        self.executor.interaction.do_mouse_up(key=key)
+
+    def do_send_key_down(self, key):
+        self.executor.interaction.do_send_key_down(key)
+
+    def do_send_key_up(self, key):
+        self.executor.interaction.do_send_key_up(key)
+
     # ------------------------------------------------------------------ #
     #  界面检测                                                            #
     # ------------------------------------------------------------------ #
@@ -59,6 +74,16 @@ class OverFieldBaseTask(BaseTask):
             threshold=0.85
         ) is not None
 
+    def already_equip_something(self) -> bool:
+        """
+        判断当前是否已经装备工具
+        做法: find 解除装备
+        """
+        return self.find_one(
+            'unequip',
+            threshold=0.85
+        ) is not None
+
     # ------------------------------------------------------------------ #
     #  导航操作                                                            #
     # ------------------------------------------------------------------ #
@@ -75,6 +100,7 @@ class OverFieldBaseTask(BaseTask):
             post_action=lambda: self.send_key('esc', after_sleep=2)
         ):
             raise Exception(f'无法返回主界面，已超时 {time_out}s')
+        self.log_info('已返回主界面')
 
     def go_esc_screen(self, time_out: int = 60):
         """
@@ -104,15 +130,44 @@ class OverFieldBaseTask(BaseTask):
     def open_interactive_menu(self, time_out: int = 10):
         """
         打开互动菜单
-        做法: 先回主页面，再匹配互动按钮并点击
+        做法: 先按住Alt呼出鼠标, 点击互动按钮后再抬起Alt
         """
-        self.go_main_screen()
+        # 按住Alt键呼出鼠标
+        self.send_key_down('alt')
+        self.sleep(0.5)  # 等待鼠标显示
+        
         switcher = self.find_one('interactive', threshold=0.85)
         if switcher is None:
-            raise Exception('找不到互动菜单入口')
-        self.click(switcher, after_sleep=2.0)  # 界面动画要时间，延迟一下避免检测bug
+            self.send_key_up('alt')  # 如果找不到按钮，先抬起Alt
+            raise Exception('找不到互动按钮')
+        
+        # 点击互动按钮
+        self.click(switcher, after_sleep=1.0)
+        
+        # 抬起Alt键
+        self.send_key_up('alt')
+        self.sleep(1.0)  # 界面动画要时间，延迟一下避免检测bug
 
-
+    def un_equip(self, time_out: int = 10):
+        """
+        解除装备
+        做法: 先按住Alt呼出鼠标, 点击互动按钮后再抬起Alt
+        """
+        # 按住Alt键呼出鼠标
+        self.send_key_down('alt')
+        self.sleep(0.5)  # 等待鼠标显示
+        
+        switcher = self.find_one('unequip', threshold=0.85)
+        if switcher is None:
+            self.send_key_up('alt')  # 如果找不到按钮，先抬起Alt
+            raise Exception('找不到解除装备按钮')
+        
+        # 点击互动按钮
+        self.click(switcher, after_sleep=1.0)
+        
+        # 抬起Alt键
+        self.send_key_up('alt')
+        self.sleep(0.5)
 
     # ------------------------------------------------------------------ #
     #  角色操作                                                            #
