@@ -56,8 +56,8 @@
 
 ## 🚀 快速开始
 
-1.  **下载安装包**：[GitHub Release](https://github.com/MarchSnow-1/ok-overfield/releases)下载最新的 `ok-of-win32-setup.exe` 安装文件。
-2.  **安装程序**：双击 `ok-of-win32-setup.exe` 文件，并按照安装向导的提示完成安装。
+1.  **下载安装包**：[GitHub Release](https://github.com/MarchSnow-1/ok-overfield/releases)下载最新的 `ok-of-win32-Release-setup.exe` 安装文件。
+2.  **安装程序**：双击 `ok-of-win32-Release-setup.exe` 文件，并按照安装向导的提示完成安装。
 3.  **运行程序**：安装完成后，从桌面快捷方式或开始菜单启动 `ok-of` 即可。
 
 ## 🔧 疑难解答 (Troubleshooting)
