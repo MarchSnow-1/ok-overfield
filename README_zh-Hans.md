@@ -41,6 +41,14 @@
 
 **使用本软件即表示您已阅读、理解并同意以上声明，并自愿承担一切潜在风险**
 
+## ⚙️ 系统要求
+
+- **游戏语言**：本程序仅在游戏使用**简体中文**时可用
+
+## 📋 可用功能列表
+
+详见 [可用功能列表](FEATURES_zh-Hans.md)
+
 ## 🚀 快速开始
 
 1.  **下载安装包**：[GitHub Release](https://github.com/MarchSnow-1/ok-overfield/releases)下载最新的 `ok-of-win32-setup.exe` 安装文件。

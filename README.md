@@ -44,6 +44,14 @@ Please note that according to the *OverField Fair Play Policy* of the OverField 
 
 **By using this software, you acknowledge that you have read, understood, and agreed to the above statement, and voluntarily assume all potential risks**
 
+## ⚙️ System Requirements
+
+- **Game Language**: This program is only available when the game uses **Simplified Chinese**
+
+## 📋 Available Features
+
+See [Available Features](FEATURES_zh-Hans.md)
+
 ## 🚀 Quick Start
 
 1. **Download Installation Package**: Download the latest `ok-of-win32-setup.exe` installation file from [GitHub Release](https://github.com/MarchSnow-1/ok-overfield/releases).
