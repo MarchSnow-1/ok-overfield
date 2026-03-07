@@ -1,0 +1,1 @@
+ok-of\Scripts\activate
