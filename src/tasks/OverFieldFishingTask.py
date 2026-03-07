@@ -208,12 +208,13 @@ class OverFieldFishingTask(OverFieldBaseTask):
         self.log_info('等待钓鱼完成...')
         while True:
             if not self.is_fishing_active():
-                self.log_info('检测到可能的上钩全屏 UI，尝试等待3秒确认...')
+                self.log_info('检测到可能的上钩全屏 UI，尝试等待4秒确认...')
 
-                self.sleep(3)
+                self.sleep(4)
 
                 if self.is_fishing_active():
-                    self.log_info('确认上钩 UI 已关闭，继续等待钓鱼结束')
+                    self.log_info('确认上钩成功')
+                    self.info['钓鱼条数'] = self.info.get('钓鱼条数', 0) + 1
                     continue
 
                 self.log_info('未检测到钓鱼界面，判定钓鱼已完成')
@@ -225,14 +226,15 @@ class OverFieldFishingTask(OverFieldBaseTask):
         """
         执行一次完整的钓鱼循环
         """
+        self.info['钓鱼循环次数'] = self.info.get('钓鱼循环次数', 0) + 1
         try:
             self.sleep(0.5)
             # 打开钓鱼菜单
             self.click(0.5,0.5)
-            
+
             # 选择鱼饵
             self.select_bait(bait_level)
-            
+
             # 开始钓鱼
             if self.start_fishing():
                 # 等待钓鱼完成
@@ -270,7 +272,7 @@ class OverFieldFishingTask(OverFieldBaseTask):
 
         cycle_label = '无限' if cycle_count == 0 else cycle_count
         self.log_info(f'配置参数 - 鱼饵等级: {bait_level}, 循环次数: {cycle_label}, 等待时间: {wait_time}秒')
-        
+
         # 初始化，回到主页面
         self.go_main_screen()
         self.sleep(0.5)
@@ -278,17 +280,14 @@ class OverFieldFishingTask(OverFieldBaseTask):
         # 解除装备钓竿
         if self.already_equip_something():
             self.un_equip()
-        
+
         # 装备钓竿
         self.take_fishing_rod()
         self.sleep(0.5)
 
         # 执行钓鱼循环
         if cycle_count == 0:
-            cycle_num = 0
             while True:
-                cycle_num += 1
-                self.log_info(f'开始第 {cycle_num} 次钓鱼循环')
                 if not self.fishing_cycle(bait_level):
                     self.log_info('钓鱼循环失败，尝试重新开始')
                 # 循环间隔等待（这里 sleep 会触发停止检查）
@@ -296,19 +295,23 @@ class OverFieldFishingTask(OverFieldBaseTask):
         else:
             total_cycles = cycle_count
             for i in range(total_cycles):
-                self.log_info(f'开始第 {i+1}/{total_cycles} 次钓鱼循环')
                 if not self.fishing_cycle(bait_level):
                     self.log_info('钓鱼循环失败，尝试重新开始')
                 if i < total_cycles - 1:
                     self.sleep(wait_time)
-        
+
         self.log_info('自动钓鱼任务完成!', notify=True)
 
     def run(self):
         """
         任务入口点，处理异常和任务停止
         """
+        self.log_info('10秒后开始自动钓鱼任务, 请回到游戏主界面', notify=True)
+        self.sleep(10)
         self.log_info('开始自动钓鱼任务', notify=True)
+
+        self.info['钓鱼条数'] = 0
+        self.info['钓鱼循环次数'] = 0
 
         try:
             return self.do_run()
