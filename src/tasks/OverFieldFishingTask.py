@@ -43,27 +43,26 @@ class OverFieldFishingTask(OverFieldBaseTask):
             self.click(fishing_rod, after_sleep=0.5)
             self.log_info('鱼竿装备完成')
         else:
-            # 如果找不到鱼竿图像，使用相对坐标双击
-            self.log_info('未找到鱼竿图像，使用默认位置点击')
-            self.click_relative(0.7, 0.9, after_sleep=0.5)
-            self.log_info('鱼竿装备完成')
+            self.log_info('未找到鱼竿图像，无法装备')
+            raise TaskDisabledException('未找到鱼竿')
         self.send_key_up('alt')
 
     def select_bait(self, bait_level: str):
         """
         选择鱼饵
+        1. 检测当前鱼饵等级
+        2. 如果已是目标等级则直接返回
+        3. 否则点击指示器打开列表
+        4. 通过背包字样判断列表是否打开
+        5. 列表打开后查找目标鱼饵并点击
+        6. 列表打开但找不到鱼饵则停止任务（鱼饵已用完）
         """
         self.log_info(f'正在选择{bait_level}级鱼饵...')
+        # 等3s加载检测
+        self.sleep(3)
 
-        # 初始化默认坐标
+        # 初始化
         valid_levels = ('1', '2', '3', '4', '5')
-        fallback_positions = {
-            '5': (0.8, 0.3),
-            '4': (0.8, 0.4),
-            '3': (0.8, 0.5),
-            '2': (0.8, 0.6),
-            '1': (0.8, 0.7),
-        }
 
         bait_level = str(bait_level).strip()
         if bait_level not in valid_levels:
@@ -95,9 +94,7 @@ class OverFieldFishingTask(OverFieldBaseTask):
         indicator_box = None
 
         def detect_indicator():
-            """
-            通过模板匹配检测当前鱼饵，返回 (level, box)。
-            """
+            """按搜索顺序查找鱼饵指示器，返回 (等级, 位置)"""
             for level in indicator_search_order:
                 template_name = bait_indicator_templates.get(level)
                 if not template_name:
@@ -108,6 +105,7 @@ class OverFieldFishingTask(OverFieldBaseTask):
             return None, None
 
         def wait_option():
+            """循环查找目标鱼饵选项，最多尝试6次"""
             template = bait_option_templates.get(bait_level)
             if not template:
                 return None
@@ -122,50 +120,49 @@ class OverFieldFishingTask(OverFieldBaseTask):
             """
             检测是否出现"背包"字样，表示鱼饵列表已打开
             """
-            backpack = self.find_one('backpack_text', threshold=0.85)
+            backpack = self.find_one('fishing_bait_beibao', threshold=0.85)
             return backpack is not None
 
         self.send_key_down('alt')
         self.sleep(0.2)
         try:
-            # UI 弹出有动画，循环尝试几次，期间短暂等待
-            for attempt in range(5):
-                current_level, indicator_box = detect_indicator()
-                if current_level:
-                    break
-                self.sleep(0.2)
+            # 检测鱼饵指示器
+            current_level, indicator_box = detect_indicator()
 
             if current_level == bait_level:
                 self.log_info(f'检测到当前已是{bait_level}级鱼饵，无需重新选择')
             else:
-                option_box = None
+                self.log_info(current_level)
+                # 尝试打开列表
+                list_opened = False
                 for open_attempt in range(3):
                     if indicator_box:
                         if open_attempt == 0:
                             self.log_info(f"检测到当前为{current_level or '未知'}级鱼饵，点击图标唤出列表")
                         else:
-                            self.log_info('鱼饵列表未显示，再次点击指示器尝试展开')
+                            self.log_info('列表未打开，再次点击指示器尝试展开')
                         self.click(indicator_box, after_sleep=0.3)
-                    else:
-                        if open_attempt == 0:
-                            self.log_info('未识别到鱼饵状态图标，使用默认坐标尝试打开列表')
-                        else:
-                            self.log_info('仍未识别到鱼饵状态图标，继续使用默认坐标打开列表')
-                        self.click_relative(0.4, 0.65, after_sleep=0.3)
 
+                        # 检查列表是否打开（通过背包字样判断）
+                        list_opened = detect_backpack()
+                        if list_opened:
+                            self.log_info('检测到鱼饵列表已打开')
+                            break
+                        self.sleep(0.2)
+                    else:
+                        self.log_info('未识别到鱼饵状态图标，无法打开列表')
+                        raise TaskDisabledException('未找到选择鱼饵图标')
+
+                # 如果列表打开了，查找目标鱼饵
+                if list_opened:
                     option_box = wait_option()
                     if option_box:
-                        break
-                    self.log_info('鱼饵列表尚未出现，稍后重试...')
-                    current_level, indicator_box = detect_indicator()
-                    self.sleep(0.2)
-
-                if option_box:
-                    self.click(option_box, after_sleep=0.8)
+                        self.click(option_box, after_sleep=0.8)
+                    else:
+                        self.log_info(f'鱼饵列表已打开但未找到{bait_level}级鱼饵，鱼饵已用完')
+                        raise TaskDisabledException(f'{bait_level}级鱼饵已用完，无法继续钓鱼')
                 else:
-                    fallback_x, fallback_y = fallback_positions[bait_level]
-                    self.log_info('未匹配到目标鱼饵图像，回退到固定坐标点击')
-                    self.click_relative(fallback_x, fallback_y, after_sleep=0.8)
+                    raise TaskDisabledException('鱼饵列表打开失败')
         finally:
             self.send_key_up('alt')
 
@@ -187,10 +184,8 @@ class OverFieldFishingTask(OverFieldBaseTask):
                 self.log_info('钓鱼已开始')
                 return True
             else:
-                # 如果找不到按钮，使用默认位置
-                self.log_info('未找到开始钓鱼按钮，使用默认位置点击')
-                self.click_relative(0.6, 0.83, after_sleep=2.0)
-                return True
+                self.log_info('未找到开始钓鱼按钮')
+                raise TaskDisabledException('未找到开始钓鱼按钮')
         finally:
             self.send_key_up('alt')
 
@@ -199,10 +194,12 @@ class OverFieldFishingTask(OverFieldBaseTask):
     def is_fishing_active(self) -> bool:
         """
         检查是否正在钓鱼
-        可以通过查找钓鱼相关UI元素来判断
+        检查 fishing_ui_record、fishing_ui、fishing_ui_cancel 任意一个
         """
-        fishing_ui = self.find_one('fishing_ui', threshold=0.85)
-        return fishing_ui is not None
+        for template in ['fishing_ui_record', 'fishing_ui', 'fishing_ui_cancel']:
+            if self.find_one(template, threshold=0.8):
+                return True
+        return False
 
     def wait_for_fishing_complete(self):
         """
@@ -211,16 +208,11 @@ class OverFieldFishingTask(OverFieldBaseTask):
         self.log_info('等待钓鱼完成...')
         while True:
             if not self.is_fishing_active():
-                self.log_info('检测到可能的上钩全屏 UI，尝试等待4秒确认...')
+                self.log_info('检测到可能的上钩全屏 UI，尝试等待3秒确认...')
 
-                recovered = False
-                for _ in range(8):  # 每次 0.5s，最多 8 次
-                    self.sleep(0.5)
-                    if self.is_fishing_active():
-                        recovered = True
-                        break
+                self.sleep(3)
 
-                if recovered:
+                if self.is_fishing_active():
                     self.log_info('确认上钩 UI 已关闭，继续等待钓鱼结束')
                     continue
 
@@ -281,7 +273,7 @@ class OverFieldFishingTask(OverFieldBaseTask):
         
         # 初始化，回到主页面
         self.go_main_screen()
-        self.sleep(1)
+        self.sleep(0.5)
 
         # 解除装备钓竿
         if self.already_equip_something():
@@ -289,7 +281,7 @@ class OverFieldFishingTask(OverFieldBaseTask):
         
         # 装备钓竿
         self.take_fishing_rod()
-        self.sleep(1)
+        self.sleep(0.5)
 
         # 执行钓鱼循环
         if cycle_count == 0:
@@ -321,8 +313,7 @@ class OverFieldFishingTask(OverFieldBaseTask):
         try:
             return self.do_run()
         except TaskDisabledException as e:
-            self.log_info('任务已被停止', notify=True)
-            pass
+            self.log_info(f'任务已停止: {str(e)}', notify=True)
         except Exception as e:
             self.log_info(f'钓鱼任务执行出错: {str(e)}', notify=True)
             raise e
