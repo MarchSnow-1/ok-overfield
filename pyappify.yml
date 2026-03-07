@@ -1,8 +1,8 @@
-name: "ok-boilerplate"
+name: "ok-of"
 uac: true
 profiles:
   - name: "Release"
-    git_url: "https://github.com/ok-oldking/ok-script-boilerplate"
+    git_url: "https://github.com/MarchSnow-1/ok-overfield"
     admin: true
     main_script: "main.py"
     requires_python: "3.12"
