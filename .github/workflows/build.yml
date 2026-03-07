@@ -63,7 +63,7 @@ jobs:
         uses: ok-oldking/partial-sync-repo@master
         with:
           repos: |
-            https://ok-oldking:${{ secrets.OK_GH }}@github.com/ok-oldking/ok-boilerplate-update.git
+            https://marchsnow-1:${{ secrets.OK_GH }}@github.com/marchsnow-1/ok-overfield-update.git
           sync_list: 'deploy.txt'
           tag: ${{ github.ref_name }}
           gitignore_file: '.update_repo_gitignore'
