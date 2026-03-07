@@ -91,10 +91,6 @@ If you encounter any problems, please check the following steps one by one befor
 * Ash Echoes (Discontinued) [https://github.com/ok-oldking/ok-baijing](https://github.com/ok-oldking/ok-baijing)
 * OverField [https://github.com/MarchSnow-1/ok-overfield](https://github.com/MarchSnow-1/ok-overfield)
 
-## ❤️ Sponsorship and Acknowledgments
+## ❤️ Acknowledgments
 
-### Sponsors
-* **EXE Signing**: Free code signing provided by [SignPath.io](https://signpath.io/), certificate by [SignPath Foundation](https://signpath.org/).
-
-### Acknowledgments
 * [ok-oldking](https://github.com/ok-oldking)

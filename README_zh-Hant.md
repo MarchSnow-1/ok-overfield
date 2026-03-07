@@ -90,10 +90,6 @@
 * 白荊迴廊（停止更新） [https://github.com/ok-oldking/ok-baijing](https://github.com/ok-oldking/ok-baijing)
 * OverField [https://github.com/MarchSnow-1/ok-overfield](https://github.com/MarchSnow-1/ok-overfield)
 
-## ❤️ 贊助與致謝
+## ❤️ 致謝
 
-### 贊助商 (Sponsors)
-* **EXE 簽章**：Free code signing provided by [SignPath.io](https://signpath.io/)，certificate by [SignPath Foundation](https://signpath.org/)。
-
-### 致謝
 * [ok-oldking](https://github.com/ok-oldking)

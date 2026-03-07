@@ -72,6 +72,9 @@ jobs:
       - name: Build with PyAppify Action
         id: build-app
         uses: ok-oldking/pyappify-action@master #使用pyappify打包exe
+        with:
+          # 使用指定版本的 Release 来获取已打包的启动器，从而跳过耗时的打包过程
+          use_release: https://api.github.com/repos/MarchSnow-1/ok-overfield/releases/tags/v1.0.0
 
       - name: Release
         uses: softprops/action-gh-release@v2
@@ -81,6 +84,6 @@ jobs:
           body: |
             ###  更新日志 ${{ steps.sync.outputs.start_tag }} -> ${{ steps.sync.outputs.end_tag }}:
                           ${{ steps.sync.outputs.changes_with_asterisk }}
-            ### 下载Release-setup.exe, 下载后可应用内更新
+            ### 请下载 ok-of-win32-Release-setup.exe, 后续更新将在应用内自动进行
           files: pyappify_dist/*
 
